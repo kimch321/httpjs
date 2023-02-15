@@ -1,4 +1,5 @@
-const http = require('http'); // ?.require가 뭐지 * notion
+const http = require('http');
+const {Http2ServerResponse} = require("http2"); // ?.require가 뭐지 * notion
 const port = process.env.PORT || 3000; // ?? http://127.0.0.1:3000 의 의미? * process는 모듈이다.
 // console.log(process.env.PORT); undefined가 출력된다.
 // console.log(port); 3000
@@ -7,7 +8,7 @@ const port = process.env.PORT || 3000; // ?? http://127.0.0.1:3000 의 의미? *
 // localhost:3000 요청시 처리
 const server = http.createServer((req,res) => { // opts, requestListener를 매게변수로 받아 http.Server 객체를 반환한다.
     // 응답헤더 작성 : 응답코드, 응답 데이터 형식 지정
-    res.writeHead(200, {'Content-Type':'text/plain'});
+    res.writeHead(200, {'Content-Type':'text/plain'}); // Http2ServerResponse의 인스턴스를 반환한다.
     // 응답메세지 전송
     res.end('Hello, World!!');
 });
