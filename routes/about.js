@@ -1,12 +1,13 @@
 const express = require('express');
+const path = require('path');
 const router = express.Router();
 
 const html = 'text/html; charset=utf-8';
 
-
-router.get('/about',(req,res) => {
-    res.type(html);
-    res.end('<h1>about 페이지 입니다!!</h1>')
+// show index page
+router.get('/',(req,res) => {
+    // 응답으로 지정한 파일의 내용을 전송함
+    res.sendFile(path.join(__dirname,'../public', 'about.html'));
 })
 
-module.exports = router;
+module.exports = router; // 이 파일이 모듈로 작동한다는 것을 표시
