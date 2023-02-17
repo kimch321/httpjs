@@ -25,6 +25,16 @@ router.get('/showsungjuk',async (req,res) => {
     res.render('showsungjuk',{title:'성적전체보기',sjs: await sjs});
 });
 
+router.get('/viewsungjuk',async (req,res) => {
+    // console.log(req.query.sjno)
+    let sjno = req.query.sjno; // querysting의 값. form으로 넘긴경우 form으로 받으면 된다. * ?...의 값
+    let sjs = new SungJuk().selectOne(sjno)
+        .then(async result => {return await result});
+    // console.log(await sjs);
+
+    res.render('viewsungjuk',{title:'성적상세보기',sjs: await sjs});
+});
+
 router.post('/sungjuk',(req,res,next) => {
       let {name, kor, eng, mat} = req.body;
 
