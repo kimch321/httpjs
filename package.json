@@ -9,11 +9,15 @@
   "author": "ZeroCho",
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.20.1",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "express-handlebars": "^6.0.7",
     "express-session": "^1.17.3",
+    "mariadb": "^3.1.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "oracledb": "^5.5.0"
   }
 }

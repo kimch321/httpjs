@@ -17,6 +17,14 @@ router.get('/sungjuk',(req,res) => {
    res.render('sungjuk',{title:'성적처리'});
 });
 
+router.get('/showsungjuk',async (req,res) => {
+    let sjs = new SungJuk().select()
+        .then(async result => {return await result});
+    console.log(await sjs);
+
+    res.render('showsungjuk',{title:'성적전체보기',sjs: await sjs});
+});
+
 router.post('/sungjuk',(req,res,next) => {
       let {name, kor, eng, mat} = req.body;
 

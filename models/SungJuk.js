@@ -3,6 +3,12 @@ const oracledb = require('../models/Oracle')
 class SungJuk {
     // 생성자 정의 - 변수 초기화
     // 즉, 매개변수로 전달된 값을 클래스 멤버변수에 대입함
+    options = { // select에는 이 옵션이 반드시 필요함. 다른 것엔 필요 없음.
+        resultSet: true,
+        outFormat: oracledb.OUT_FORMAT_OBJECT
+    };
+    selectSql = 'select 등록순서,학생이름,국어점수,영어점수,수학점수,REGDATE from sungjuk2 order by 등록순서 desc';
+
     constructor(name,kor,eng,mat,tot,avg,grd) {
         this.name = name;
         this.kor = kor;
@@ -33,7 +39,27 @@ class SungJuk {
     }
 
     // 성적 전체 조회
-    select() {}
+    async select() {
+        let conn;
+        let result;
+        try {
+          conn = await oracledb.makeConn();
+          result = await conn.execute(this.selectSql,[],this.options);
+          let rs = result.resultSet;
+          let row;
+          while((row = await rs.getRow())) {
+              result = new SungJuk(row[1],row[2],row[3],row[4])
+              result.sjno = row[0];
+              result.regdate = row[5];
+          }
+        } catch(e) {
+            console.log(e)
+        } finally {
+            await oracledb.clossConn(conn);
+        }
+
+        return await result;
+    }
 
     // 성적 상세 조회
     selectIne(등록순서){}
