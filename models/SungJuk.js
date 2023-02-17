@@ -7,7 +7,7 @@ class SungJuk {
         resultSet: true,
         outFormat: oracledb.OUT_FORMAT_OBJECT
     };
-    selectSql = 'select 등록순서,학생이름,국어점수,영어점수,수학점수,REGDATE from sungjuk2 order by 등록순서 desc';
+    selectSql = `select 등록순서,학생이름,국어점수,영어점수,수학점수, to_char(regdate,'YYYY-MM-DD') regdate from sungjuk2 order by 등록순서 desc`;
 
     constructor(name,kor,eng,mat,tot,avg,grd) {
         this.name = name;
@@ -42,15 +42,20 @@ class SungJuk {
     async select() {
         let conn;
         let result;
+        let sjs = [];
         try {
           conn = await oracledb.makeConn();
           result = await conn.execute(this.selectSql,[],this.options);
           let rs = result.resultSet;
           let row;
           while((row = await rs.getRow())) {
-              result = new SungJuk(row[1],row[2],row[3],row[4])
-              result.sjno = row[0];
-              result.regdate = row[5];
+              // console.log(row)
+              let sj = new SungJuk(row[1],row[2],row[3],row[4])
+              // console.log(sj);
+              sj.sjno = row[0];
+              sj.regdate = row[5];
+              sjs.push(sj);
+              console.log(sjs);
           }
         } catch(e) {
             console.log(e)
@@ -58,7 +63,7 @@ class SungJuk {
             await oracledb.clossConn(conn);
         }
 
-        return await result;
+        return await sjs;
     }
 
     // 성적 상세 조회
